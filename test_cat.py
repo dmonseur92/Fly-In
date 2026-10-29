@@ -55,7 +55,6 @@ while running:
 
     screen.blit(background, (0, 0))
 
-    # 1. Déplacer tous les chats
     for cat in cats:
         rect = cat["rect"]
         speed = cat["speed"]
@@ -63,7 +62,6 @@ while running:
         rect.x += speed[0]
         rect.y += speed[1]
 
-        # Rebonds sur les bords
         if rect.left <= 0:
             rect.left = 0
             speed[0] = abs(speed[0])
@@ -78,7 +76,6 @@ while running:
             rect.bottom = height
             speed[1] = -abs(speed[1])
 
-    # 2. Collisions entre les chats
     for i in range(len(cats)):
         for j in range(i + 1, len(cats)):
             cat1 = cats[i]
@@ -88,7 +85,6 @@ while running:
             rect2 = cat2["rect"]
 
             if rect1.colliderect(rect2):
-                # Déterminer l'axe du contact
                 overlap_x = min(rect1.right, rect2.right) - max(
                     rect1.left, rect2.left
                 )
@@ -100,7 +96,6 @@ while running:
                     cat1["speed"][0] *= -1
                     cat2["speed"][0] *= -1
 
-                    # Écarter légèrement les chats
                     if rect1.centerx < rect2.centerx:
                         rect1.right = rect2.left
                     else:
@@ -114,7 +109,6 @@ while running:
                     else:
                         rect1.top = rect2.bottom
 
-    # 3. Collision avec la souris
     for cat in cats:
         touching = cat["rect"].colliderect(mouse_rect)
 
@@ -123,7 +117,6 @@ while running:
 
         cat["last_mouse_collision"] = touching
 
-    # 4. Dessiner les chats et la souris
     for cat in cats:
         screen.blit(cat["image"], cat["rect"])
 
