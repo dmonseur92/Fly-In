@@ -10,17 +10,17 @@ pygame.display.set_caption("FLY_IN 🐈")
 
 clock = pygame.time.Clock()
 
-background = pygame.image.load("background.jpg").convert()
+background = pygame.image.load("assets/img/background.jpg").convert()
 background = pygame.transform.scale(background, (width, height))
 
-mouse = pygame.image.load("mouse.jpg").convert_alpha()
+mouse = pygame.image.load("assets/img/mouse.jpg").convert_alpha()
 mouse = pygame.transform.scale(mouse, (200, 200))
 mouse_rect = mouse.get_rect(topleft=(0, 0))
 
 image_files = [
-    "noodle.jpg",
-    "ramen.jpg",
-    "catM.png",
+    "assets/img/noodle.jpg",
+    "assets/img/ramen.jpg",
+    "assets/img/catM.png",
 ]
 
 cats = []
