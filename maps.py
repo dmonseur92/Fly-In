@@ -10,10 +10,10 @@ class ZoneType(Enum):
 
 class Zone(BaseModel):
     name: str
-    x: int = Field(ge=0)
-    y: int = Field(ge=0)
+    x: int
+    y: int
     color: str | None = None
-    max_capacity: int | None = Field(default=1, gt=0)
+    max_drones: int | None = Field(default=1, gt=0)
     type: ZoneType = ZoneType.NORMAL
     start: bool = Field(default=False)
     end: bool = Field(default=False)
@@ -37,6 +37,7 @@ class Connexion(BaseModel):
 
 
 class Map(BaseModel):
-    nbr_drones: int = Field(ge=0)
+    nbr_drones: int = Field(ge=0, default=0)
     # zone_nbr: int = Field(ge=0)
     zone_list: list[Zone] = Field(default_factory=list)
+    connexion_list: list[str] = Field(default_factory=list)
