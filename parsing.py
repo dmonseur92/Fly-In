@@ -61,12 +61,17 @@ def parse_metadata(metadata: str, zone: Zone) -> None:
 
 def check_connections(map: Map) -> None:
     connexions = set()
+    zone_names = [zone.name for zone in map.zone_list]
 
     for connexion in map.connexion_list:
-        a, b = connexion.split("-")
+        if connexion.count("-") != 1:
+            raise ValueError(f"Invalid connexion: {connexion}")
 
+        a, b = connexion.split("-")
         if not a or not b:
             raise ValueError(f"Missing connexion: {connexion}")
+        if a not in zone_names or b not in zone_names :
+            raise ValueError(f"Connexion for unknow zone: {connexion}")
         if connexion in connexions or f"{b}-{a}" in connexions:
             raise ValueError(f"Duplicate connexion: {connexion}")
         connexions.add(connexion)
@@ -77,4 +82,5 @@ def check_connections(map: Map) -> None:
     if not any(connexion.startswith("goal-") or connexion.endswith("-goal") for connexion in map.connexion_list):
         raise ValueError(f"Missing ending connexion")
 
-
+if __name__ == "__main__":
+    get_text_file("maps/medium/01_dead_end_trap.txt")
