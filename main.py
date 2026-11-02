@@ -5,11 +5,11 @@ from renderer import Renderer
 pygame.init()
 
 screen = pygame.display.set_mode((2560, 1600))
-pygame.display.set_caption("Fck-In-Fly-In")
+pygame.display.set_caption("Fly-In")
 
 clock = pygame.time.Clock()
 
-map_data = get_text_file("maps/easy/01_linear_path.txt")
+map_data = get_text_file("maps/medium/01_dead_end_trap.txt")
 renderer = Renderer(screen)
 
 running = True
@@ -20,9 +20,10 @@ while running:
 
     screen.fill((30, 30, 30))
 
+    renderer.draw_connections(map_data)
     renderer.draw_zones(map_data)
-    print("Map :", map_data)
-    print("Zones :", len(map_data.zone_list))
+    # print("Map :", map_data)
+    # print("Zones :", len(map_data.zone_list))
 
     pygame.display.flip()
     clock.tick(60)

@@ -26,7 +26,8 @@ def triage(parts: list[list[str]]) -> Map:
             parse_zone(part, new_map)
         elif part[0] == "connection:":
             new_map.connexion_list.append(part[1])
-            # print(new_map.connexion_list)
+
+    check_connections(new_map)
     return new_map
 
 def parse_zone(parts: list[str], map: Map) -> None:
@@ -55,9 +56,25 @@ def parse_metadata(metadata: str, zone: Zone) -> None:
         elif key == "zone":
             zone.type = ZoneType(value.lower())
         else:
-            print(f"{key} is not a valid key")
-        print(zone.name, zone.x, zone.y, zone.start, zone.end, zone.type, zone.color, zone.max_drones, )
+            raise ValueError(f"Invalid key {key}")
+        # print(zone.name, zone.x, zone.y, zone.start, zone.end, zone.type, zone.color, zone.max_drones, )
+
+def check_connections(map: Map) -> None:
+    connexions = set()
+
+    for connexion in map.connexion_list:
+        a, b = connexion.split("-")
+
+        if not a or not b:
+            raise ValueError(f"Missing connexion: {connexion}")
+        if connexion in connexions or f"{b}-{a}" in connexions:
+            raise ValueError(f"Duplicate connexion: {connexion}")
+        connexions.add(connexion)
+
+    if not any(connexion.startswith("start-") or connexion.endswith("-start") for connexion in map.connexion_list):
+        raise ValueError(f"Missing starting connexion")
+
+    if not any(connexion.startswith("goal-") or connexion.endswith("-goal") for connexion in map.connexion_list):
+        raise ValueError(f"Missing ending connexion")
 
 
-if __name__ == "__main__":
-    get_text_file("maps/hard/03_ultimate_challenge.txt")
