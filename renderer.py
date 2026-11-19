@@ -7,6 +7,8 @@ class Renderer:
         self.screen = screen
         self.spacing = 150
         self.center = screen.get_rect().center
+        self.font = pygame.font.SysFont(None, 40)
+        self.back_button = pygame.Rect(20, 20, 250, 60)
 
     def grid_to_screen(self, x, y):
         screen_x = 200 + x * self.spacing
@@ -15,7 +17,10 @@ class Renderer:
 
     def draw_zone(self, zone):
         position = self.grid_to_screen(zone.x, zone.y)
-        color = pygame.Color(zone.color or "white")
+        try:
+            color = pygame.Color(zone.color or "white")
+        except ValueError:
+            color = pygame.Color("white")
         pygame.draw.circle(self.screen, color, position, 40)
         font = pygame.font.SysFont(None, 36)
         text = font. render(f"0 / {zone.max_drones}", True, "white")
@@ -39,3 +44,9 @@ class Renderer:
             pos2 = self.grid_to_screen(zone2.x, zone2.y)
 
             pygame.draw.line(self.screen, "white", pos1, pos2, 3)
+
+    def draw_back_button(self):
+        pygame.draw.rect(self.screen, "white", self.back_button, 2)
+        text = self.font.render("BACK TO MENU", True, "white")
+        text_rect = text.get_rect(center=self.back_button.center)
+        self.screen.blit(text, text_rect)
